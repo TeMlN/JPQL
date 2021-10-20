@@ -95,7 +95,8 @@ public class JpaMain {
             */
 
 
-            System.out.println("======= new 명령어로 조회");
+            System.out.println("======= new 명령어로 조회 =======");
+/*
 
             Member member = new Member();
             member.setUsername("member1");
@@ -114,6 +115,30 @@ public class JpaMain {
             // 단순 값을 dto로 바로 조회
             // 패키지 명을 포함한 전체 클래스 명 입력
             // 순서와 타입이 일치하는 생성자 필요
+            */
+
+            System.out.println("============ paging(페이징) query ============");
+
+            for(int i=0; i<100; i++) {
+                Member member = new Member();
+                member.setUsername("member" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
+
+            em.flush();
+            em.clear();
+
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(0) // 이 code가 페이징의 핵심!
+                    .setMaxResults(10) // 이 code가 페이징의 핵심!
+                    .getResultList();
+
+            System.out.println("resultList.size() = " + resultList.size());
+
+            for (Member member1 : resultList) {
+                System.out.println("member1 = " + member1);
+            }
 
             tx.commit();
         }
