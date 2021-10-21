@@ -14,7 +14,7 @@ public class JpaMain {
         try {
 
             System.out.println("======== 객체지향 쿼리 언어 기본 =========");
-/*
+            /*
             Member member = new Member();
             member.setUsername("member1");
             member.setAge(10);
@@ -46,7 +46,7 @@ public class JpaMain {
                 .getSingleResult();
 
             System.out.println("result = " + result.getUsername());
-        */
+            */
 
 
             System.out.println("======== 프로젝션 =========");
@@ -96,7 +96,7 @@ public class JpaMain {
 
 
             System.out.println("======= new 명령어로 조회 =======");
-/*
+            /*
 
             Member member = new Member();
             member.setUsername("member1");
@@ -119,6 +119,7 @@ public class JpaMain {
 
             System.out.println("============ paging(페이징) query ============");
 
+            /*
             for(int i=0; i<100; i++) {
                 Member member = new Member();
                 member.setUsername("member" + i);
@@ -139,7 +140,45 @@ public class JpaMain {
             for (Member member1 : resultList) {
                 System.out.println("member1 = " + member1);
             }
+            */
 
+
+            System.out.println("======== Inner JOIN ========");
+            Team team1 = new Team();
+            team1.setName("teamA");
+            em.persist(team1);
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setAge(10);
+
+            member.setTeam(team1);
+
+            em.persist(member);
+
+            String query1 = "select m from Member m inner join m.team t";
+            List<Member> resultList1 = em.createQuery(query1, Member.class)
+                    .getResultList();
+
+
+            System.out.println("======= Out JOIN =======");
+            Team team2 = new Team();
+            team2.setName("teamA"); 
+            em.persist(team2);
+
+            Member member2 = new Member();
+            member2.setUsername("member1");
+            member2.setAge(10);
+
+            member.setTeam(team2);
+
+            em.persist(member);
+
+            String query2 = "select m from Member m left join Team t on m.username = t.name";
+            List<Member> resultList2 = em.createQuery(query2, Member.class)
+                    .getResultList();
+
+            System.out.println("resultList2 = " + resultList2.size());
             tx.commit();
         }
         catch (Exception e) {
