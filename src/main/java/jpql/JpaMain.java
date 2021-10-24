@@ -163,7 +163,7 @@ public class JpaMain {
 
             System.out.println("======= Out JOIN =======");
             Team team2 = new Team();
-            team2.setName("teamA"); 
+            team2.setName("teamA");
             em.persist(team2);
 
             Member member2 = new Member();
