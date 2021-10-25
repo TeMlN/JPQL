@@ -212,7 +212,7 @@ public class JpaMain {
             }*/
 
 
-            Team team = new Team();
+            /*Team team = new Team();
             team.setName("teamA");
             em.persist(team);
 
@@ -238,8 +238,89 @@ public class JpaMain {
                 System.out.println("objects = " + objects[0]);
                 System.out.println("objects = " + objects[1]);
                 System.out.println("objects = " + objects[2]);
-            }
+            }*/
 
+            System.out.println("===== JPQL CASE 식 =====");
+            /*
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member");
+            member.setAge(10);
+            member.setType(MemberType.ADMIN);
+            member.setTeam(team);
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            String query = "select " +
+                                "case when m.age <= 10 then '학생요금' " +
+                                "     when m.age >= 60 then '경로요금' " +
+                                "     else '일반요금' end " +
+                           "from Member m";
+            List<String> resultList = em.createQuery(query, String.class)
+                    .getResultList();
+
+            for (String s : resultList) {
+                System.out.println("s = " + s);
+            }
+            */
+
+            System.out.println("====== COALESCE ======");
+            /*
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername(null);
+            member.setAge(10);
+            member.setType(MemberType.ADMIN);
+            member.setTeam(team);
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            String query = "select coalesce(m.username, '이름없는 회원') as username from Member m "; //coalesce = 하나씩 조회해서 null이 아니면 반환
+            List<String> resultList = em.createQuery(query, String.class)
+                    .getResultList();
+
+            for (String s : resultList) {
+                System.out.println("s = " + s);
+            }
+*/
+
+            System.out.println("====== NULLIF ======");
+            /*
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("관리자");
+            member.setAge(10);
+            member.setType(MemberType.ADMIN);
+            member.setTeam(team);
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            String query = "select nullif(m.username, '관리자') as username from Member m "; //nullif = 두 값이 같으면 null 반환, 다르면 첫번째 값 반환
+            List<String> resultList = em.createQuery(query, String.class)
+                    .getResultList();
+
+            for (String s : resultList) {
+                System.out.println("s = " + s);
+            }
+            */
 
             tx.commit();
         }
