@@ -144,6 +144,7 @@ public class JpaMain {
 
 
             System.out.println("======== Inner JOIN ========");
+            /*
             Team team1 = new Team();
             team1.setName("teamA");
             em.persist(team1);
@@ -159,9 +160,11 @@ public class JpaMain {
             String query1 = "select m from Member m inner join m.team t";
             List<Member> resultList1 = em.createQuery(query1, Member.class)
                     .getResultList();
+                    */
 
 
             System.out.println("======= Out JOIN =======");
+            /*
             Team team2 = new Team();
             team2.setName("teamA");
             em.persist(team2);
@@ -172,13 +175,72 @@ public class JpaMain {
 
             member.setTeam(team2);
 
-            em.persist(member);
+            em.persist(member2);
 
             String query2 = "select m from Member m left join Team t on m.username = t.name";
             List<Member> resultList2 = em.createQuery(query2, Member.class)
                     .getResultList();
 
             System.out.println("resultList2 = " + resultList2.size());
+            */
+
+            /*
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member");
+            member.setAge(10);
+            member.setType(MemberType.ADMIN);
+            member.setTeam(team);
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            String query = "select m.username, 'HELLO', true From Member m " +
+                            "where m.type = jpql.MemberType.ADMIN";
+            List<Object[]> result = em.createQuery(query).getResultList();
+
+
+            for (Object[] objects : result) {
+                System.out.println("objects = " + objects[0]);
+                System.out.println("objects = " + objects[1]);
+                System.out.println("objects = " + objects[2]);
+            }*/
+
+
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member");
+            member.setAge(10);
+            member.setType(MemberType.ADMIN);
+            member.setTeam(team);
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            String query = "select m.username, 'HELLO', true From Member m " +
+                    "where m.type = :userType";
+
+            List<Object[]> result = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
+                    .getResultList();
+
+            for (Object[] objects : result) {
+                System.out.println("objects = " + objects[0]);
+                System.out.println("objects = " + objects[1]);
+                System.out.println("objects = " + objects[2]);
+            }
+
+
             tx.commit();
         }
         catch (Exception e) {
