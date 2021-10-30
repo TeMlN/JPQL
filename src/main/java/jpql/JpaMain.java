@@ -1,6 +1,7 @@
 package jpql;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 public class JpaMain {
@@ -322,30 +323,29 @@ public class JpaMain {
             }
             */
 
-
             Team team = new Team();
-            team.setName("teamA");
             em.persist(team);
 
-            Member member = new Member();
-            member.setUsername("관리자");
-            member.setAge(10);
-            member.setType(MemberType.ADMIN);
-            member.setTeam(team);
+            Member member1 = new Member();
+            member1.setUsername("관리자1");
+            member1.setTeam(team);
+            em.persist(member1);
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUsername("관리자2");
+            member2.setTeam(team);
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-            String query = "select concat( 'a', 'b') From Member m"; //nullif = 두 값이 같으면 null 반환, 다르면 첫번째 값 반환
-            List<String> resultList = em.createQuery(query, String.class)
+            String query = "select t.members From Team t";
+            List<Collection> resultList = em.createQuery(query, Collection.class)
                     .getResultList();
 
-            for (String s : resultList) {
-                System.out.println("s = " + s);
-            }
+            System.out.println("resultList = " + resultList);
 
+           
 
             tx.commit();
         }
