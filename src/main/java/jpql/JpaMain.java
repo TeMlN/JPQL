@@ -322,7 +322,7 @@ public class JpaMain {
                 System.out.println("s = " + s);
             }
             */
-
+/*
             Team team = new Team();
             em.persist(team);
 
@@ -335,7 +335,7 @@ public class JpaMain {
             member2.setUsername("관리자2");
             member2.setTeam(team);
             em.persist(member2);
-
+            
             em.flush();
             em.clear();
 
@@ -343,9 +343,48 @@ public class JpaMain {
             List<Collection> resultList = em.createQuery(query, Collection.class)
                     .getResultList();
 
-            System.out.println("resultList = " + resultList);
+            System.out.println("resultList = " + resultList);*/
 
-           
+
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("member3");
+            member3.setTeam(teamB);
+            em.persist(member3);
+
+            em.flush();
+            em.clear();
+
+            String query = "select distinct t From Team t join fetch t.members"; // 지연로딩 보다 fetch join이 우선순위가 높다.
+            //1:N 조인은 값이 뻥튀기가 될수도 있다 (중복 출력)
+
+            List<Team> result = em.createQuery(query, Team.class)
+                    .getResultList();
+
+            System.out.println("result = " + result.size());
+            for (Team team : result) {
+                System.out.println("team = " + team.getName() + " " + team.getMembers().size());
+                for(Member member : team.getMembers()) {
+                    System.out.println("-> member = " + member);
+                }
+            }
 
             tx.commit();
         }
