@@ -465,7 +465,7 @@ public class JpaMain {
             for (Member member : members) {
                 System.out.println("member = " + member);
             }*/
-
+/*
             Team teamA = new Team();
             teamA.setName("teamA");
             em.persist(teamA);
@@ -499,7 +499,49 @@ public class JpaMain {
 
             for (Member member : resultList) {
                 System.out.println("member = " + member);
-            }
+            }*/
+
+
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("member3");
+            member3.setTeam(teamB);
+            em.persist(member3);
+
+            em.flush();
+            em.clear();
+
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate(); // 영향을 받은 엔티티 수를 반환 해주는 method (현재 경우 모든 멤버가 age가 20으로 변경되었으므로 멤버의 갯수 3개이다.)
+
+            System.out.println("resultCount = " + resultCount);
+
+            em.clear(); // 벌크 연산후 영속성 컨텍스트 초기화 해주기 (쿼리를 날려도 db에만 반영될 뿐 영속성 컨텍스트는 그대로 이기 떄문에)
+
+            Member member = em.find(Member.class, member1.getId());
+
+            System.out.println("member = " + member.getAge());
+
+            System.out.println("member1 = " + member1.getAge());
+            System.out.println("member2 = " + member2.getAge());
+            System.out.println("member3 = " + member3.getAge());
 
             tx.commit();
         }
