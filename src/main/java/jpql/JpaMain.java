@@ -429,7 +429,7 @@ public class JpaMain {
                 }
             }*/
 
-
+/*
             Team teamA = new Team();
             teamA.setName("teamA");
             em.persist(teamA);
@@ -463,6 +463,41 @@ public class JpaMain {
                     .getResultList();
 
             for (Member member : members) {
+                System.out.println("member = " + member);
+            }*/
+
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("member3");
+            member3.setTeam(teamB);
+            em.persist(member3);
+
+            em.flush();
+            em.clear();
+
+            //Named 쿼리의 장점 : 애플리케이션 로딩 시점에 초기화를 하여 사용하기 때문에 오타가 나더라도 문제가 없음 (컴파일 쪽에서 잡아주기 때문)
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "member1")
+                    .getResultList();
+
+            for (Member member : resultList) {
                 System.out.println("member = " + member);
             }
 
