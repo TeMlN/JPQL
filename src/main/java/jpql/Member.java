@@ -30,16 +30,13 @@ public class Member {
         team.getMembers().add(this);
     }
 
+
     @Override
-
     public String toString() {
-
-        return "Team{" +
-
+        return "Member{" +
                 "id=" + id +
-                ", name='" + username + '\'' +
+                ", username='" + username + '\'' +
+                ", age=" + age +
                 '}';
-
     }
-
 }
